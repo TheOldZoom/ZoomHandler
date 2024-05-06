@@ -25,7 +25,7 @@ To use ZoomHandler in your project, follow these steps:
 2. **Create an Instance**: Create an instance of the ZoomHandler class, providing necessary configuration options.
 
    ```javascript
-   const handler = new ZoomHandler({
+   new ZoomHandler({
      client,
      commandsPath: path.join(__dirname, "commands"),
      eventsPath: path.join(__dirname, "events"),
