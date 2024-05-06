@@ -1,6 +1,6 @@
 {
   "name": "zoomhandler",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "The Best Discord Bot Events & Commands handler",
   "main": "index.js",
   "scripts": {

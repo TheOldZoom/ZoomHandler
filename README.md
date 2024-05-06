@@ -11,29 +11,30 @@ You can install ZoomHandler via npm:
 ```bash
 npm install zoomhandler
 ```
+
 ## Usage
 
 To use ZoomHandler in your project, follow these steps:
 
 1. **Import ZoomHandler**: Import the ZoomHandler module into your project.
 
-    ```javascript
-    const { ZoomHandler } = require("zoomhandler");
-    ```
+   ```javascript
+   const { ZoomHandler } = require("zoomhandler");
+   ```
 
 2. **Create an Instance**: Create an instance of the ZoomHandler class, providing necessary configuration options.
 
-    ```javascript
-    const handler = new ZoomHandler({
-        client,
-        commandsPath: path.join(__dirname, "commands"),
-        eventsPath: path.join(__dirname, "events")
-    });
-    ```
+   ```javascript
+   const handler = new ZoomHandler({
+     client,
+     commandsPath: path.join(__dirname, "commands"),
+     eventsPath: path.join(__dirname, "events"),
+   });
+   ```
 
-    - `client`: Your Zoom client instance.
-    - `commandsPath`: The path to the directory containing your command files. (will be added soon.)
-    - `eventsPath`: The path to the directory containing your event files.
+   - `client`: Your Zoom client instance.
+   - `commandsPath`: The path to the directory containing your command files. (will be added soon.)
+   - `eventsPath`: The path to the directory containing your event files.
 
 3. **Define Commands**: Define your commands in separate files within the specified `commandsPath`. Each command file should export a function containing the command logic.
 
@@ -48,10 +49,10 @@ Here's an example demonstrating how to use ZoomHandler:
 ```javascript
 const { ZoomHandler } = require("zoomhandler");
 
-const handler = new ZoomHandler({
-    client,
-    commandsPath: path.join(__dirname, "commands"),
-    eventsPath: path.join(__dirname, "events")
+new ZoomHandler({
+  client,
+  commandsPath: path.join(__dirname, "commands"),
+  eventsPath: path.join(__dirname, "events"),
 });
 ```
 
@@ -63,7 +64,7 @@ Here's an example of how to use an event file:
 // events/ready.js
 
 module.exports = (client) => {
-    console.log(`${client.user.tag} is ready !`)
+  console.log(`${client.user.tag} is ready !`);
 };
 ```
 
@@ -71,9 +72,8 @@ module.exports = (client) => {
 // events/messageCreate.js
 
 module.exports = (client, message) => {
-    console.log(message)
+  console.log(message);
 };
-
 ```
 
 ## Developer To-Do
