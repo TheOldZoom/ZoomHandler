@@ -1,11 +1,9 @@
 {
   "name": "zoomhandler",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "The Best Discord Bot Events & Commands handler",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "homepage": "https://github.com/theoldzoom/ZoomHandler#readme",
   "keywords": [
     "discord.js",
     "djs",
@@ -16,7 +14,7 @@
     "discord-js-v14",
     "djs-v14"
   ],
-  "author": "",
+  "author": "TheOldZoom",
   "license": "ISC",
   "devDependencies": {
     "discord.js": "^14.15.2",
