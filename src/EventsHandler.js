@@ -1,7 +1,5 @@
 const fs = require("fs");
 const path = require("path");
-const { Logger } = require("term-logger");
-const { messageCreateHandler } = require("./utils/messageHandler");
 async function registerEvents(eventsFolder, client) {
   fs.readdir(eventsFolder, (err, files) => {
     if (err) {
@@ -16,10 +14,9 @@ async function registerEvents(eventsFolder, client) {
       const event = require(path.join(eventsFolder, file));
       client.on(eventName, event.bind(null, client));
 
-      Logger.event(`Successfully registered event ${eventName}`);
+      client.log.event(`Successfully registered event ${eventName}`);
     });
   });
-  messageCreateHandler(client);
 }
 
 module.exports = { registerEvents };

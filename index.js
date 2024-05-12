@@ -1,7 +1,11 @@
-const { Logger } = require("term-logger");
-const { MessageCommandsHandler, registerEvents } = require("./src/Zoom");
+const { Logger } = require("zoom-logger");
+const {
+  MessageCommandsHandler,
+  registerEvents,
+  interactionCreateHandler,
+  deleteinteractionCommands,
+} = require("./src/Zoom");
 const { Collection } = require("discord.js");
-
 class ZoomHandler {
   /**
    * @param {Object} options
@@ -9,14 +13,23 @@ class ZoomHandler {
    * @param {string} options.eventsPath
    * @param {string} options.messageCommandsPath
    * @param {string[]} options.devGuilds
+   * @param {string} options.interactionCommandsPath
    */
-  constructor({ client, eventsPath, messageCommandsPath, devGuilds }) {
+  constructor({
+    client,
+    eventsPath,
+    messageCommandsPath,
+    interactionCommandsPath,
+    devGuilds,
+  }) {
     this.client = client;
     this.eventsPath = eventsPath;
     this.commandsPath = messageCommandsPath;
+    this.interactionCommandsPath = interactionCommandsPath;
     this.devGuilds = devGuilds;
     this.client.log = Logger;
-    this.client.commands = new Collection();
+    this.client.interactionCommands = new Collection();
+    this.client.messageCommands = new Collection();
     if (!this.client) {
       Logger.error("Client is not defined.");
       return;
@@ -30,6 +43,11 @@ class ZoomHandler {
     }
     if (this.commandsPath !== undefined) {
       MessageCommandsHandler(this.commandsPath, this.client);
+    }
+    if (this.interactionCommandsPath !== undefined) {
+      client.on("ready", (client) => {
+        interactionCreateHandler(this.interactionCommandsPath, this.client);
+      });
     }
   }
 }

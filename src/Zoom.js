@@ -1,4 +1,11 @@
 const { registerEvents } = require("./EventsHandler");
-const { MessageCommandsHandler } = require("./MessageCommandsHandler");
+const { MessageCommandsHandler } = require("./utils/MessageCommandsHandler");
+const {
+  interactionCreateHandler,
+} = require("./utils/interactionCommandsHandler");
 
-module.exports = { registerEvents, MessageCommandsHandler };
+module.exports = {
+  registerEvents,
+  MessageCommandsHandler,
+  interactionCreateHandler,
+};
