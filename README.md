@@ -19,6 +19,10 @@ You can install ZoomHandler via npm:
 ```bash
 npm install zoomhandler
 ```
+or you can use npx:
+```bash
+npx zoomhandler
+```
 
 Make sure to have Zoom-Logger & Discord.js installed
 
