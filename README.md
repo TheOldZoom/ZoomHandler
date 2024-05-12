@@ -143,7 +143,7 @@ module.exports = (client, message) => {
 Here's an example of how to use an MessageCreate command File
 
 ```js
-//messageCommands/ping.js
+// messageCommands/ping.js
 module.exports = {
   name: "ping",
   description: "Ping! Pong!",
@@ -153,11 +153,12 @@ module.exports = {
 };
 ```
 
-### Example interactionCreate Command File
+## Example interactionCreate Command File
 
 Here's an example of how to use an interactionCreate command File
 
 ```js
+// interactionCommands/ping.js
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
