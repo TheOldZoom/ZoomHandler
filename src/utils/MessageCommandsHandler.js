@@ -1,36 +1,46 @@
 const fs = require("fs");
 const path = require("path");
 const { messageCreateHandler } = require("./commandsHandler");
+const { Collection } = require("discord.js");
 
-async function MessageCommandsHandler(Path, client) {
-  const commandFiles = fs
-    .readdirSync(Path)
-    .filter((file) => file.endsWith(".js"));
+async function readMessageCommands(directory, client) {
+  const messageCommands = new Map();
 
-  for (const file of commandFiles) {
-    const command = require(path.join(Path, file));
-    if (!command.data.name) {
-      client.log.warn(file + " is missing a name, ignoring it.");
-      continue;
+  const readFiles = async (dir) => {
+    const files = await fs.promises.readdir(dir);
+    for (const file of files) {
+      const filePath = path.join(dir, file);
+      const stat = await fs.promises.stat(filePath);
+      if (stat.isDirectory()) {
+        await readFiles(filePath); // recursively read subdirectories
+      } else if (file.endsWith(".js")) {
+        try {
+          const command = require(filePath);
+          if (!command.data.name || !command.data.description || !command.run || /\s/.test(command.data.name)) {
+            client.log.warn(`Invalid command file ${filePath}, ignoring it.`);
+            continue;
+          }
+          client.log.command(`Successfully loaded command ${command.data.name}`);
+          messageCommands.set(command.data.name, command);
+        } catch (error) {
+          console.error(`Error loading command file ${filePath}:`, error);
+        }
+      }
     }
-    if (!command.data.description) {
-      client.log.warn(file + " is missing a description, ignoring it.");
-      continue;
-    }
-    if (!command.run) {
-      client.log.warn(file + " is missing an run function, ignoring it.");
-      continue;
-    }
-    if (/\s/.test(command.data.name)) {
-      client.log.warn(
-        file + " contains a command name with spaces, ignoring it."
-      );
-      continue;
-    }
-    client.log.command(`Successfully loaded command ${command.data.name}`);
-    client.messageCommands.set(command.data.name, command);
+  };
+
+  await readFiles(directory);
+  return messageCommands;
+}
+
+async function MessageCommandsHandler(directory, client) {
+  try {
+    const messageCommands = await readMessageCommands(directory, client);
+    client.messageCommands = messageCommands;
+    messageCreateHandler(client);
+  } catch (error) {
+    console.error("Error loading message commands:", error);
   }
-  messageCreateHandler(client);
 }
 
 module.exports = { MessageCommandsHandler };

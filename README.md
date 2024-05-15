@@ -19,7 +19,9 @@ You can install ZoomHandler via npm:
 ```bash
 npm install zoomhandler
 ```
+
 or you can use npx:
+
 ```bash
 npx zoomhandler
 ```
@@ -144,10 +146,13 @@ Here's an example of how to use an MessageCreate command File
 
 ```js
 // messageCommands/ping.js
+// messageCommands/general/ping.js
 module.exports = {
-  name: "ping",
-  description: "Ping! Pong!",
-  execute(message, args) {
+  data: {
+    name: "ping",
+    description: "Ping! Pong!",
+  },
+  run: async ({ message, args, client }) => {
     message.channel.send("Pong!");
   },
 };
@@ -159,6 +164,7 @@ Here's an example of how to use an interactionCreate command File
 
 ```js
 // interactionCommands/ping.js
+// interactionCommands/general/ping.js
 const { SlashCommandBuilder } = require("@discordjs/builders");
 
 module.exports = {
