@@ -1,20 +1,38 @@
 const fs = require("fs");
 const path = require("path");
+
 async function registerEvents(eventsFolder, client) {
-  fs.readdir(eventsFolder, (err, files) => {
+  fs.readdir(eventsFolder, (err, eventFolders) => {
     if (err) {
       console.error("Error reading directory:", err);
       return;
     }
 
-    const eventFiles = files.filter((file) => file.endsWith(".js"));
+    eventFolders.forEach((eventFolder) => {
+      const eventFolderPath = path.join(eventsFolder, eventFolder);
+      
+      fs.stat(eventFolderPath, (err, stats) => {
+        if (err) {
+          console.error("Error reading folder:", err);
+          return;
+        }
 
-    eventFiles.forEach((file) => {
-      const eventName = file.split(".")[0];
-      const event = require(path.join(eventsFolder, file));
-      client.on(eventName, event.bind(null, client));
+        if (stats.isDirectory()) {
+          fs.readdir(eventFolderPath, (err, files) => {
+            if (err) {
+              console.error("Error reading event folder:", err);
+              return;
+            }
 
-      client.log.event(`Successfully registered event ${eventName}`);
+            files.filter(file => file.endsWith(".js")).forEach(file => {
+              const eventHandler = require(path.join(eventFolderPath, file));
+              client.on(eventFolder, eventHandler.bind(null, client));
+
+              client.log.event(`Successfully registered event ${eventFolder}`);
+            });
+          });
+        }
+      });
     });
   });
 }
