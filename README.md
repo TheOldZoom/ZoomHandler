@@ -123,9 +123,10 @@ client.login("Your bot token");
 ## Example Event File
 
 Here's an example of how to use an event file:
+Make sure that the event file is inside a directory that is named the same event name as you like.
 
 ```javascript
-// events/ready.js
+// events/ready/ready.js
 
 module.exports = (client) => {
   console.log(`${client.user.tag} is ready !`);
