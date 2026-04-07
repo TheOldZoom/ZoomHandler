@@ -5,11 +5,7 @@ import type {
   Message,
   PermissionResolvable,
 } from "discord.js";
-import type {
-  CommandClass,
-  MessageCommandConfig,
-  SlashSubcommandMeta,
-} from "../classes/Command";
+import type { CommandClass, MessageCommandConfig } from "../classes/Command";
 
 function errLine(err: unknown): string {
   if (err instanceof Error) return err.stack ?? err.message;
