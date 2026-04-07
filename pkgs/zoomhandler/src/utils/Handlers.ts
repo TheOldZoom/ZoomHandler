@@ -8,8 +8,8 @@ import { Collection } from "discord.js";
 import { readdir, stat } from "fs/promises";
 import path from "node:path";
 import { createRequire } from "node:module";
-import type { InteractionCommand, MessageCommand } from "../types/Client";
 import { interactionCreateEvent, messageCreateEvent } from "./events";
+import type { InteractionCommand, MessageCommand } from "../classes/Command";
 
 const require = createRequire(import.meta.url);
 
