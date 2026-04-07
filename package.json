@@ -2,7 +2,7 @@
   "name": "zoomhandler",
   "version": "0.2.5",
   "description": "The Best Discord Bot Events & Commands handler",
-  "main": "index.js",
+  "packageManager": "bun@1.3.11",
   "homepage": "https://discord.gg/NYXwbBQMzJ",
   "keywords": [
     "discord.js",
@@ -15,9 +15,22 @@
     "djs-v14"
   ],
   "author": "TheOldZoom",
-  "license": "ISC",
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "prepack": "bun run build"
+  },
+  "peerDependencies": {
+    "discord.js": "^14.0.0"
+  },
   "devDependencies": {
-    "discord.js": "^14.15.2",
-    "zoom-logger": "^1.0.2"
+    "@types/node": "^25.5.2",
+    "discord.js": "^14.0.0",
+    "typescript": "^6.0.2"
   }
 }
