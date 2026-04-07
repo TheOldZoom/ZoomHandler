@@ -1,6 +1,6 @@
 {
   "name": "zoomhandler",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "description": "The Best Discord Bot Events & Commands handler",
   "packageManager": "bun@1.3.11",
   "homepage": "https://discord.gg/NYXwbBQMzJ",
@@ -16,6 +16,9 @@
   ],
   "author": "TheOldZoom",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [

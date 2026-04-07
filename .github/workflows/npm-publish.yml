@@ -1,33 +1,54 @@
-# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
-# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
-
-name: Node.js Package
+name: Publish to npm
 
 on:
   release:
-    types: [created]
+    types: [published]
+
+permissions:
+  contents: read
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: pkgs/zoomhandler
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      - run: npm ci
-      - run: npm test
 
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: "20"
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: 1.3.11
+
+      - name: Confirm package identity
+        run: |
+          test "$(node -p "require('./package.json').name")" = "zoomhandler"
+          test "$(node -p "require('./package.json').private || false")" != "true"
+
+      - run: bun install --frozen-lockfile
+      - run: bun run build
+
+      - name: List files that would be published
+        run: npm pack --dry-run
+
+      - name: Assert tarball paths are only package.json + dist/
+        run: |
+          set -euo pipefail
+          TGZ="/tmp/$(npm pack --pack-destination /tmp --ignore-scripts | tail -1)"
+          mapfile -t paths < <(tar tzf "$TGZ")
+          for p in "${paths[@]}"; do
+            case "$p" in
+              package/package.json) ;;
+              package/dist|package/dist/*) ;;
+              *) echo "unexpected path in tarball: $p"; exit 1 ;;
+            esac
+          done
+
+      - run: npm publish --access public
         env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
