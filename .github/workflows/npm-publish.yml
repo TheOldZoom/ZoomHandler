@@ -25,6 +25,14 @@ jobs:
         with:
           bun-version: 1.3.11
 
+      - name: Set package version from release tag
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          VERSION="${TAG#v}"
+          echo "release tag=$TAG → package.json version=$VERSION"
+          npm pkg set "version=$VERSION"
+          test "$(node -p "require('./package.json').version")" = "$VERSION"
+
       - name: Confirm package identity
         run: |
           test "$(node -p "require('./package.json').name")" = "zoomhandler"
