@@ -1,5 +1,5 @@
 import "../types/Client";
-import { Collection, type Client, Events } from "discord.js";
+import { type Client, Events, Collection } from "discord.js";
 import Logger from "./Logger";
 import {
   registerEvents,
@@ -14,6 +14,7 @@ export interface ZoomHandlerOptions {
   commandsPath?: string;
   interactionCommandsPath?: string;
   devGuilds?: string[];
+  devUsers?: string[];
 }
 
 export default class ZoomHandler {
@@ -22,6 +23,7 @@ export default class ZoomHandler {
   public readonly commandsPath: string | undefined;
   public readonly interactionCommandsPath: string | undefined;
   public readonly devGuilds: string[];
+  public readonly devUsers: string[];
 
   constructor({
     client,
@@ -30,6 +32,7 @@ export default class ZoomHandler {
     commandsPath,
     interactionCommandsPath,
     devGuilds,
+    devUsers,
   }: ZoomHandlerOptions) {
     if (!client) {
       Logger.error("Client is not defined.");
@@ -44,9 +47,13 @@ export default class ZoomHandler {
     this.commandsPath = commandsPath;
     this.interactionCommandsPath = interactionCommandsPath;
     this.devGuilds = devGuilds ?? [];
+    this.devUsers = devUsers ?? [];
+    this.client.devGuilds = this.devGuilds;
+    this.client.devUsers = this.devUsers;
+    this.client.messageCommandCooldowns = new Collection();
+    this.client.interactionCommandCooldowns = new Collection();
     this.client.interactionCommands = new Collection();
     this.client.messageCommands = new Collection();
-
     if (this.eventsPath !== undefined) {
       registerEvents(this.eventsPath, this.client);
     }
