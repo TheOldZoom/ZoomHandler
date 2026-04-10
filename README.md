@@ -1,182 +1,56 @@
-# ZoomHandler Documentation
+# ZoomHandler
 
-## How To Get Support
+> This is still in development, READMEs are made with AI ( I will eventually make a whole website documentation about it).
 
-You can join my [Discord Server Support](https://discord.gg/NYXwbBQMzJ)
+Source repository for **zoomhandler**, a Discord.js v14 library that loads events, prefix commands, and slash commands from the filesystem—with subcommands, permissions, cooldowns, and dev-guild tooling.
 
-OR
+## Using the library
 
-You can add me in discord: TheOldZoom
+**Installation, API reference, examples, and behavior are documented in the package readme:**
 
-## Overview
+**[→ `pkgs/zoomhandler/README.md`](pkgs/zoomhandler/README.md)**
 
-ZoomHandler is a event & slashCommand & messageCommand handler related to Discord.js v14
+If you are building a bot, start there. It covers `ZoomHandler`, `Command` / `CommandWithSubcommands`, `messageCommand` / `messageCommandWithSubcommands`, `Event`, registration, and TypeScript types.
 
-## Installation
-
-You can install ZoomHandler via npm:
+Quick install (from npm):
 
 ```bash
-npm install zoomhandler
+npm install zoomhandler discord.js
 ```
 
-or you can use npx:
+## Repository layout
+
+| Path                                                                     | Purpose                                                                                                       |
+| ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| [`pkgs/zoomhandler/`](pkgs/zoomhandler/)                                 | Library source (`src/`), build output (`dist/` on publish), and **[`README.md`](pkgs/zoomhandler/README.md)** |
+| [`pkgs/zoomhandler/tests/one/`](pkgs/zoomhandler/tests/one/)             | Small runnable sample (Bun) that exercises commands, subcommands, and events                                  |
+| [`.github/workflows/npm-publish.yml`](.github/workflows/npm-publish.yml) | Publishes the package from `pkgs/zoomhandler` on GitHub Releases (and manual workflow dispatch)               |
+
+## Local development
+
+From the package directory:
 
 ```bash
-npx zoomhandler
+cd pkgs/zoomhandler
+bun install
+bun run build
 ```
 
-Make sure to have Zoom-Logger & Discord.js installed
+To run the sample bot (after copying env vars—see [`tests/one/.env.example`](pkgs/zoomhandler/tests/one/.env.example)):
 
-## Usage
-
-To use ZoomHandler in your project, follow these steps:
-
-1. **Import ZoomHandler**: Import the ZoomHandler module into your project.
-
-   ```javascript
-   const { ZoomHandler } = require("zoomhandler");
-   ```
-
-2. **Create an Instance**: Create an instance of the ZoomHandler class, providing necessary configuration options.
-
-   ```javascript
-   new ZoomHandler({
-     client,
-     messageCommandsPath: path.join(__dirname, "messageCommands"),
-     interactionCommandsPath: path.join(__dirname, "interactionCommands"),
-     eventsPath: path.join(__dirname, "events"),
-   });
-   ```
-
-   - `client`: Your Zoom client instance.
-   - `messageCommandsPath`: The path to the directory containing your message command files.
-   - `interactionCommandsPath`: The path to the directory containing your interaction command files.
-   - `eventsPath`: The path to the directory containing your event files.
-
-3. **Define Message Commands**: Define your commands in separate files within the specified `messageCommandsPath`. Each command file should export a function containing the command logic.
-
-```js
-module.exports = {
-  data: {
-    name: "ping",
-    description: "Ping! Pong!",
-  },
-  run: async ({ message, args, client }) => {
-    message.channel.send("Pong!");
-  },
-};
+```bash
+cd pkgs/zoomhandler/tests/one
+bun install
+bun run index.ts
 ```
 
-Make sure to define your prefix in your main file or where your client is handled.
+## Support and issues
 
-```js
-client.prefix = "prefix";
-```
+- Repository: [TheOldZoom/ZoomHandler](https://github.com/TheOldZoom/ZoomHandler)
+- Discord: [TheOldZoom](https://discord.com/users/1041378399005978624)
 
-4. **Define Events**: Define your events in separate files within the specified `eventsPath`. Each event file should export a function containing the discord.js event logic.
+Bug reports and feature requests are welcome via GitHub issues.
 
-5. **Execute Commands**: Execute commands using the methods provided by ZoomHandler.
+## License
 
-## Example
-
-Here's an example demonstrating how to use ZoomHandler:
-
-```javascript
-const { ZoomHandler } = require("zoomhandler");
-
-client.prefix = ".";
-new ZoomHandler({
-  client,
-  messageCommandsPath: path.join(__dirname, "messageCommands"),
-  interactionCommandsPath: path.join(__dirname, "interactionCommands"),
-  eventsPath: path.join(__dirname, "events"),
-});
-```
-
-Here's how you should use ZoomHandler with discord.js
-
-```js
-const { Client, GatewayIntentBits } = require("discord.js");
-const { Logger } = require("zoom-logger");
-const path = require("path");
-const client = new Client({
-  intents: [
-    GatewayIntentBits.Guilds,
-    GatewayIntentBits.MessageContent,
-    GatewayIntentBits.GuildMessages,
-  ],
-});
-const { ZoomHandler } = require("zoomhandler");
-
-client.prefix = ".";
-new ZoomHandler({
-  client,
-  messageCommandsPath: path.join(__dirname, "messageCommands"),
-  interactionCommandsPath: path.join(__dirname, "interactionCommands"),
-  eventsPath: path.join(__dirname, "events"),
-});
-
-client.login("Your bot token");
-```
-
-## Example Event File
-
-Here's an example of how to use an event file:
-Make sure that the event file is inside a directory that is named the same event name as you like.
-
-```javascript
-// events/ready/ready.js
-
-module.exports = (client) => {
-  console.log(`${client.user.tag} is ready !`);
-};
-```
-
-```javascript
-// events/messageCreate.js
-
-module.exports = (client, message) => {
-  console.log(message.content);
-};
-```
-
-## Example MessageCreate Command File
-
-Here's an example of how to use an MessageCreate command File
-
-```js
-// messageCommands/ping.js
-// messageCommands/general/ping.js
-module.exports = {
-  data: {
-    name: "ping",
-    description: "Ping! Pong!",
-  },
-  run: async ({ message, args, client }) => {
-    message.channel.send("Pong!");
-  },
-};
-```
-
-## Example interactionCreate Command File
-
-Here's an example of how to use an interactionCreate command File
-
-```js
-// interactionCommands/ping.js
-// interactionCommands/general/ping.js
-const { SlashCommandBuilder } = require("@discordjs/builders");
-
-module.exports = {
-  data: new SlashCommandBuilder().setName("ping").setDescription("Ping Pong!"),
-  run: async ({ interaction, client }) => {
-    await interaction.reply("Pong!");
-  },
-};
-```
-
-## Developer To-Do
-
-- validations (Before executing the code).
-- better documentation.
+See [LICENSE](LICENSE) in this repository.

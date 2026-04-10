@@ -57,7 +57,7 @@ jobs:
       - name: List files that would be published
         run: npm pack --dry-run
 
-      - name: Assert tarball paths are only package.json + dist/
+      - name: Assert tarball paths are package.json, README, and dist/
         run: |
           set -euo pipefail
           TGZ="/tmp/$(npm pack --pack-destination /tmp --ignore-scripts | tail -1)"
@@ -65,6 +65,7 @@ jobs:
           for p in "${paths[@]}"; do
             case "$p" in
               package/package.json) ;;
+              package/README.md) ;;
               package/dist|package/dist/*) ;;
               *) echo "unexpected path in tarball: $p"; exit 1 ;;
             esac
