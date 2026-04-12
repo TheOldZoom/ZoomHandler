@@ -18,6 +18,8 @@ Quick install (from npm):
 npm install zoomhandler discord.js
 ```
 
+The published build includes **CommonJS** and **ESM** so you can use `require()` or `import` depending on your setup.
+
 ## Repository layout
 
 | Path                                                                     | Purpose                                                                                                       |

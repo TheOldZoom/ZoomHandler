@@ -12,7 +12,9 @@ Handler for **Discord.js v14** that loads **events**, **prefix message commands*
 ## Requirements
 
 - **discord.js** `^14.14.0` (peer dependency)
-- A runtime that can load this package as **ES modules** (for example Node with `"type": "module"` or Bun)
+- **Node.js** (or another JS runtime) that supports the published **CommonJS** and **ES module** entry points
+
+The npm package exposes **`require("zoomhandler")`** (CommonJS) and **`import "zoomhandler"`** (ESM) via the [`exports`](https://nodejs.org/api/packages.html#exports-sugar) field. Use whichever matches your project: `"type": "commonjs"` or `"type": "module"`, TypeScript with `moduleResolution` `node16` / `nodenext`, Bun, webpack, Rollup, etc.
 
 ```bash
 npm install zoomhandler discord.js

@@ -52,6 +52,7 @@ jobs:
           test "$(node -p "require('./package.json').private || false")" != "true"
 
       - run: bun install --frozen-lockfile
+      - run: bun run typecheck
       - run: bun run build
 
       - name: List files that would be published
