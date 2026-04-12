@@ -6,7 +6,7 @@
   "homepage": "https://github.com/TheOldZoom/ZoomHandler",
   "repository": {
     "type": "git",
-    "url": "https://github.com/TheOldZoom/ZoomHandler.git"
+    "url": "git+https://github.com/TheOldZoom/ZoomHandler.git"
   },
   "bugs": {
     "url": "https://github.com/TheOldZoom/ZoomHandler/issues"
