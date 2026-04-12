@@ -1,0 +1,8 @@
+{
+  "name": "bot-javascript",
+  "main": "src/index.js",
+  "private": true,
+  "dependencies": {
+    "discord.js": "14.22.0"
+  }
+}
