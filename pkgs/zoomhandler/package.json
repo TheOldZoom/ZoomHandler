@@ -1,6 +1,6 @@
 {
   "name": "zoomhandler",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "The Best Discord Bot Events & Commands handler",
   "packageManager": "bun@1.3.11",
   "homepage": "https://github.com/TheOldZoom/ZoomHandler",
